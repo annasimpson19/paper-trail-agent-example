@@ -1,0 +1,7 @@
+{
+  "max_price_eth": "0.09",
+  "min_verified_proofs": 3,
+  "require_stage_open": true,
+  "min_remaining_supply": 1,
+  "quantity": 1
+}
