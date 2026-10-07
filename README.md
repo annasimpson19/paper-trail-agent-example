@@ -68,6 +68,20 @@ Each port reads every price, window, cap and address from the brief, the stage e
 mint if the on-chain price differs from the brief; is a dry run unless told `execute`; and says in its result that
 an acquisition in the AI Agents stage is recorded as operator-declared.
 
+## It has been done
+
+On 7 October 2026 this exact code minted in the AI Agents stage on Ethereum mainnet, run by RUTHVEN AI LIMITED as a
+studio test: identity registered as ERC-8004 agent 52348
+([tx](https://etherscan.io/tx/0x1909fc57e6963d96dcaf3b8447efbd67d9597505040a347d67425085b4e41248), gas only), then
+PAPER TRAIL token 22 minted at 0.02 ETH
+([tx](https://etherscan.io/tx/0xe24a7cf5b0e3222cec5d32b9929f01e22c82e7b78bf86a5c4b5182668dad6532)). A funded wallet,
+two commands, about ten minutes:
+
+```
+AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute
+OPERATOR_NAME="Your Co" AGENT_NAME="your agent" ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 1
+```
+
 ## Rules the example keeps to
 
 - The only genuine contract is `0x6eE9aaE76d422Bf4eC27449EB83245A79adAe105` on Ethereum mainnet.
