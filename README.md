@@ -34,6 +34,22 @@ npm run agent -- --execute --quantity 1   # mint for real, from the key in .env
 npm run verify -- PT-1140       # verify one work's proof on its own
 ```
 
+## The AI Agents stage
+
+PAPER TRAIL also runs a stage for wallets operated by AI agents, alongside the public one: the same works at
+0.02 ETH, up to 5 per wallet, closing with the public stage. `src/agent-stage.ts` does it end to end: read the
+`agent_stage` section of the brief, check it against the live endpoint, sign the operator declaration with the
+agent's wallet, receive a single-use SeaDrop signed-mint permission, check the signer's bounds on SeaDrop itself,
+then call `mintSigned`.
+
+```
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" npm run stage              # dry run
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" npm run stage -- --execute --quantity 2
+```
+
+The declaration is recorded publicly with the acquisition as *operator-declared*. It says who was operating the
+wallet; it claims nothing about autonomy.
+
 ## Rules the example keeps to
 
 - The only genuine contract is `0x6eE9aaE76d422Bf4eC27449EB83245A79adAe105` on Ethereum mainnet.

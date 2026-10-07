@@ -8,7 +8,8 @@
   "scripts": {
     "agent": "tsx src/agent.ts",
     "verify": "tsx src/verify.ts",
-    "mint": "tsx src/mint.ts"
+    "mint": "tsx src/mint.ts",
+    "stage": "tsx src/agent-stage.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
