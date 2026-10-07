@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "noEmit": false, "outDir": "dist", "rootDir": "..", "declaration": false },
+  "include": ["index.ts", "../shared/paperTrail.ts"]
+}

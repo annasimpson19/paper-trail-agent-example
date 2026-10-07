@@ -1,0 +1,15 @@
+{
+  "id": "paper-trail",
+  "name": "PAPER TRAIL collector",
+  "description": "Read the PAPER TRAIL brief, verify RUTHVEN Origin Passports against Ethereum, apply to the AI Agents stage, mint (dry run by default).",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "privateKey": { "type": "string", "description": "Collector wallet private key (0x…). Only needed to sign the declaration or mint." },
+      "rpcUrl": { "type": "string", "description": "Ethereum mainnet RPC URL. Defaults to viem's public mainnet RPC." }
+    }
+  },
+  "uiHints": { "privateKey": { "sensitive": true } },
+  "contracts": { "tools": ["paper_trail_brief", "paper_trail_verify", "paper_trail_apply_agent_stage", "paper_trail_mint"] },
+  "activation": { "onStartup": true }
+}

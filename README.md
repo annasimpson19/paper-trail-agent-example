@@ -50,6 +50,23 @@ OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" npm run stage -- --execute --
 The declaration is recorded publicly with the acquisition as *operator-declared*. It says who was operating the
 wallet; it claims nothing about autonomy.
 
+## Ports
+
+The same method, wrapped for three agent frameworks, under `ports/`. All three share one viem core,
+`ports/shared/paperTrail.ts` (discover → verify → evaluate → calldata, plus the agent-stage declaration), which
+you can also run on its own as a self-test that fetches the brief, verifies PT-1140 and reads the stage facts
+without any key: `npm run ports:selftest`.
+
+| port | framework | what you get |
+|---|---|---|
+| [`ports/agentkit/`](ports/agentkit/) | Coinbase AgentKit | a `customActionProvider` with `paper_trail_brief`, `paper_trail_verify`, `paper_trail_apply_agent_stage`, `paper_trail_mint`; the wallet is AgentKit's `EvmWalletProvider` |
+| [`ports/game/`](ports/game/) | Virtuals GAME SDK | a `GameWorker` `paper_trail_collector` with the same four `GameFunction`s; the wallet is a viem `WalletClient` you hold |
+| [`ports/openclaw/`](ports/openclaw/) | OpenClaw | a tool plugin with the same four tools, a `SKILL.md`, and the plugin manifest; needs Node ≥ 24.16 and was not typechecked against openclaw's own types (see its README) |
+
+Each port reads every price, window, cap and address from the brief, the stage endpoint or the chain; refuses to
+mint if the on-chain price differs from the brief; is a dry run unless told `execute`; and says in its result that
+an acquisition in the AI Agents stage is recorded as operator-declared.
+
 ## Rules the example keeps to
 
 - The only genuine contract is `0x6eE9aaE76d422Bf4eC27449EB83245A79adAe105` on Ethereum mainnet.

@@ -1,0 +1,16 @@
+{
+  "name": "paper-trail-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PAPER TRAIL GameWorker for the Virtuals GAME SDK: brief, verify against Ethereum, apply to the AI Agents stage, mint (dry run by default).",
+  "license": "MIT",
+  "main": "index.ts",
+  "scripts": { "start": "tsx run.ts" },
+  "dependencies": {
+    "@virtuals-protocol/game": "^0.1.14",
+    "dotenv": "^16.4.5",
+    "viem": "2.38.3"
+  },
+  "devDependencies": { "tsx": "^4.19.2", "typescript": "^5.6.3" }
+}

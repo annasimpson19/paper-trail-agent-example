@@ -9,11 +9,17 @@
     "agent": "tsx src/agent.ts",
     "verify": "tsx src/verify.ts",
     "mint": "tsx src/mint.ts",
-    "stage": "tsx src/agent-stage.ts"
+    "stage": "tsx src/agent-stage.ts",
+    "ports:selftest": "tsx ports/shared/paperTrail.ts",
+    "typecheck": "tsc --noEmit && tsc -p ports/openclaw/tsconfig.json"
   },
   "dependencies": {
+    "@coinbase/agentkit": "^0.10.4",
+    "@virtuals-protocol/game": "^0.1.14",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.4"
+    "ethers": "^6.13.4",
+    "typebox": "^1.3.36",
+    "viem": "2.38.3"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

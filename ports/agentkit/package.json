@@ -1,0 +1,20 @@
+{
+  "name": "paper-trail-agentkit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PAPER TRAIL actions for Coinbase AgentKit: brief, verify against Ethereum, apply to the AI Agents stage, mint (dry run by default).",
+  "license": "MIT",
+  "main": "index.ts",
+  "dependencies": {
+    "@coinbase/agentkit": "^0.10.4",
+    "viem": "2.38.3",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@coinbase/agentkit-langchain": ">=0.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@coinbase/agentkit-langchain": { "optional": true }
+  }
+}
