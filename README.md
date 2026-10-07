@@ -1,9 +1,9 @@
 # paper-trail-agent-example
 
 A small, honest example of an agent that **verifies before it buys**: it reads the PAPER TRAIL agent brief,
-checks the collection's provenance anchor against Ethereum itself, applies its own rules, and only then mints
-in the public stage. Dry run by default. Nothing is sent to the chain unless an operator passes `--execute`
-with a funded key.
+checks the collection's provenance anchor against Ethereum itself, applies its own rules, and only then mints,
+in the AI Agents stage or the public stage. Dry run by default. Nothing is sent to the chain unless an operator
+passes `--execute` with a funded key.
 
 PAPER TRAIL is 4,000 collages by Miss AL Simpson, each with a RUTHVEN Origin Passport.
 Brief: https://missalsimpson.com/agents/paper-trail/ · JSON: https://missalsimpson.com/agents/paper-trail.json
@@ -11,7 +11,55 @@ Brief: https://missalsimpson.com/agents/paper-trail/ · JSON: https://missalsimp
 This repository is published by the artist's studio. It states facts and shows a method.
 It is not a recommendation to buy. RUTHVEN AI LIMITED values nothing and recommends nothing.
 
-## What it does
+## Quick start for agents: the AI Agents stage
+
+If you are an agent, or run one, start here. The AI Agents stage is a second stage of the same drop, alongside the
+public one: the same works, the same contract, the same reveal, at **0.02 ETH per work, up to 5 per wallet**, open
+now and closing with the public stage on **13 October 2026 at 21:00 UTC**.
+
+**Eligibility.** A wallet operated by an AI agent, with (1) an operator declaration signed by that wallet, and
+(2) an ERC-8004 identity on the Identity Registry, on Ethereum mainnet or on Base, whose agent wallet or owner is
+the minting wallet, checked on chain. `npm run register-identity` registers one (one transaction, gas only).
+
+**What it costs.** 0.02 ETH per work, plus gas for two transactions. From the first real run (7 October 2026):
+
+| transaction | gas used | at 0.2 gwei | at 3 gwei |
+|---|---|---|---|
+| register the ERC-8004 identity (once) | 177,888 | ≈ 0.00004 ETH | ≈ 0.0005 ETH |
+| `mintSigned`, one work | 153,650 | ≈ 0.00003 ETH | ≈ 0.0005 ETH |
+
+So one work is ≈ 0.0201 ETH all in at low gas, five works ≈ 0.1001 ETH. The dry run prints the live figure for your
+wallet: price, estimated gas at the current fee, the total, and whether your balance covers it.
+
+```bash
+npm install
+cp .env.example .env            # RPC_URL and AGENT_PRIVATE_KEY (the agent's wallet; needed to sign the declaration)
+
+# 1. Identity, once. Dry run first: static call, predicted agentId, gas estimate. Then send it.
+AGENT_URI=https://your.site/agent.json npm run register-identity
+AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute
+
+# 2. The stage. Dry run: reads the brief and the live endpoint (refuses if they disagree), signs the declaration,
+#    receives the single-use permission, checks the signer's bounds on SeaDrop itself, prints the estimated total.
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage
+#    Then mint for real (quantity 1 to 5).
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 1
+```
+
+A funded wallet, two transactions, about ten minutes. `src/agent-stage.ts` is the whole method: read the
+`agent_stage` section of the brief, check it against the live endpoint, sign the operator declaration with the
+agent's wallet, receive a SeaDrop signed-mint permission, verify the signer's bounds on SeaDrop, then `mintSigned`.
+The acquisition is recorded publicly as *operator-declared*, identity verified on chain. It says who was operating
+the wallet; it claims nothing about autonomy. A dry run also leaves a granted-but-unused permission in that record,
+flagged as such.
+
+**Before you buy, what you can check.** Token ids are assigned in mint order and the collection is unrevealed until
+the public stage closes, so you cannot inspect the particular work you will receive. You can check the 30 featured
+works (full Passport, source works, hashes, proof: `npm run verify -- PT-1140`) and the collection commitment, a
+Merkle root over all 4,000 Passports anchored on Ethereum, which `npm run agent` recomputes and compares with the
+registry. At the reveal your own work's proof folds to that same root.
+
+## The public stage: what the full agent does
 
 1. **Discover** — fetch `paper-trail.json` (contract, stage window, price, mint call).
 2. **Verify** — for the featured works, fetch each `/proof`, recompute the Merkle leaf and root locally,
@@ -24,7 +72,7 @@ It is not a recommendation to buy. RUTHVEN AI LIMITED values nothing and recomme
 5. **Record** — write `acquisitions/<tx>.json` with wallet, token ids, price, timestamp, the rules that passed,
    and `acquisition_method: "operator-authorised agent run"`. If a human pressed the button, the record says so.
 
-## Run
+## Run the public stage (0.09 ETH, up to 1,000 per wallet)
 
 ```bash
 npm install
@@ -33,23 +81,6 @@ npm run agent                   # dry run: discover, verify, evaluate, print the
 npm run agent -- --execute --quantity 1   # mint for real, from the key in .env
 npm run verify -- PT-1140       # verify one work's proof on its own
 ```
-
-## The AI Agents stage
-
-PAPER TRAIL also runs a stage for wallets operated by AI agents, alongside the public one: the same works at
-0.02 ETH, up to 5 per wallet, closing with the public stage. `src/agent-stage.ts` does it end to end: read the
-`agent_stage` section of the brief, check it against the live endpoint, sign the operator declaration with the
-agent's wallet, receive a single-use SeaDrop signed-mint permission, check the signer's bounds on SeaDrop itself,
-then call `mintSigned`.
-
-```
-AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute   # once: ERC-8004 identity (gas only)
-OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage              # dry run
-OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 2
-```
-
-The stage requires an ERC-8004 identity whose agent wallet or owner is the minting wallet (`npm run register-identity` registers one; gas only). The declaration is recorded publicly with the acquisition as *operator-declared*, identity verified on chain. It says who was operating the
-wallet; it claims nothing about autonomy.
 
 ## Ports
 

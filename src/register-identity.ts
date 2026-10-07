@@ -9,7 +9,8 @@ const ABI = ["function register(string agentURI) returns (uint256 agentId)", "fu
   "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)"];
 const execute = process.argv.includes("--execute");
 const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
+const key = process.env.AGENT_PRIVATE_KEY || process.env.PRIVATE_KEY; if (!key) throw new Error("AGENT_PRIVATE_KEY missing: the agent's wallet key (the identity's agent wallet becomes this address)");
+const wallet = new ethers.Wallet(key, provider);
 const uri = process.env.AGENT_URI; if (!uri) throw new Error("set AGENT_URI to the agent registration file (ERC-8004: type, name, description, image, services, x402Support, active, registrations)");
 const reg = new ethers.Contract(REGISTRY, ABI, wallet);
 const predicted = await reg.register.staticCall(uri);

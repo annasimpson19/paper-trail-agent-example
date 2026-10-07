@@ -49,6 +49,15 @@ export async function mintInAgentStage(wallet: ethers.Wallet, quantity: number, 
   if (BigInt(p.mintParams.mintPrice as string) < BigInt(bounds.minMintPrice.toString())) throw new Error("permission price below the on-chain minimum");
   const value = BigInt(p.value_wei);
   console.log(`mintSigned(…, ${quantity}) value ${ethers.formatEther(value)} ETH from ${wallet.address}; signer ${signer} authorised until ${new Date(Number(bounds.maxEndTime) * 1000).toISOString()}`);
+  // Estimated total cost: price + gas at the current fee, against the wallet's balance. The first real mint in this
+  // stage (token 22, 7 Oct 2026) used 153,650 gas; that figure stands in if the node refuses to estimate (usually
+  // because the wallet cannot yet cover the value).
+  const provider = wallet.provider!;
+  const fee = await provider.getFeeData(); const gasPrice = fee.maxFeePerGas ?? fee.gasPrice ?? 0n;
+  let gas = 153_650n; let gasNote = " (figure from the first real mint; the node declined to estimate)";
+  try { gas = await seadrop.mintSigned.estimateGas(p.nftContract, p.feeRecipient, ethers.ZeroAddress, quantity, p.mintParams, p.salt, p.signature, { value }); gasNote = ""; } catch {}
+  const gasCost = gas * gasPrice; const total = value + gasCost; const balance = await provider.getBalance(wallet.address);
+  console.log(`estimated total ≈ ${ethers.formatEther(total)} ETH = ${ethers.formatEther(value)} ETH price + ≈ ${ethers.formatEther(gasCost)} ETH gas (${gas} gas @ ${ethers.formatUnits(gasPrice, "gwei")} gwei${gasNote}) · balance ${ethers.formatEther(balance)} ETH${balance < total ? " · INSUFFICIENT for this mint" : ""}`);
   if (!execute) { console.log("dry run: not sent (pass --execute)"); return null; }
   const tx = await seadrop.mintSigned(p.nftContract, p.feeRecipient, ethers.ZeroAddress, quantity, p.mintParams, p.salt, p.signature, { value });
   console.log("sent", tx.hash); const rc = await tx.wait(); return { txHash: tx.hash, blockNumber: rc.blockNumber };
@@ -59,7 +68,8 @@ if (process.argv[1]?.endsWith("agent-stage.ts")) {
   const qi = process.argv.indexOf("--quantity"); const qty = qi >= 0 ? Number(process.argv[qi + 1]) : 1;
   if (!Number.isInteger(qty) || qty < 1) throw new Error("--quantity must be a positive integer");
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
-  const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
+  const key = process.env.AGENT_PRIVATE_KEY || process.env.PRIVATE_KEY; if (!key) throw new Error("AGENT_PRIVATE_KEY missing: the agent's wallet key (needed for the declaration signature even in a dry run)");
+  const wallet = new ethers.Wallet(key, provider);
   const erc8004 = process.env.ERC8004_AGENT_ID ? { registry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", agentId: process.env.ERC8004_AGENT_ID } : undefined;
   mintInAgentStage(wallet, qty, process.env.OPERATOR_NAME || "unnamed operator", process.env.AGENT_NAME || "unnamed agent", execute, erc8004)
     .then(r => console.log(r ?? "done")).catch(e => { console.error(String(e)); process.exit(1); });
