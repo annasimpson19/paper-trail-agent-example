@@ -56,7 +56,8 @@ export async function mintInAgentStage(wallet: ethers.Wallet, quantity: number, 
 
 if (process.argv[1]?.endsWith("agent-stage.ts")) {
   const execute = process.argv.includes("--execute");
-  const qty = Number(process.argv[process.argv.indexOf("--quantity") + 1] || 1);
+  const qi = process.argv.indexOf("--quantity"); const qty = qi >= 0 ? Number(process.argv[qi + 1]) : 1;
+  if (!Number.isInteger(qty) || qty < 1) throw new Error("--quantity must be a positive integer");
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
   const erc8004 = process.env.ERC8004_AGENT_ID ? { registry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", agentId: process.env.ERC8004_AGENT_ID } : undefined;
