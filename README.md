@@ -43,11 +43,12 @@ agent's wallet, receive a single-use SeaDrop signed-mint permission, check the s
 then call `mintSigned`.
 
 ```
-OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" npm run stage              # dry run
-OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" npm run stage -- --execute --quantity 2
+AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute   # once: ERC-8004 identity (gas only)
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage              # dry run
+OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 2
 ```
 
-The declaration is recorded publicly with the acquisition as *operator-declared*. It says who was operating the
+The stage requires an ERC-8004 identity whose agent wallet or owner is the minting wallet (`npm run register-identity` registers one; gas only). The declaration is recorded publicly with the acquisition as *operator-declared*, identity verified on chain. It says who was operating the
 wallet; it claims nothing about autonomy.
 
 ## Ports

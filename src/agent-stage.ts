@@ -59,6 +59,7 @@ if (process.argv[1]?.endsWith("agent-stage.ts")) {
   const qty = Number(process.argv[process.argv.indexOf("--quantity") + 1] || 1);
   const provider = new ethers.JsonRpcProvider(process.env.RPC_URL);
   const wallet = new ethers.Wallet(process.env.AGENT_PRIVATE_KEY!, provider);
-  mintInAgentStage(wallet, qty, process.env.OPERATOR_NAME || "unnamed operator", process.env.AGENT_NAME || "unnamed agent", execute)
+  const erc8004 = process.env.ERC8004_AGENT_ID ? { registry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432", agentId: process.env.ERC8004_AGENT_ID } : undefined;
+  mintInAgentStage(wallet, qty, process.env.OPERATOR_NAME || "unnamed operator", process.env.AGENT_NAME || "unnamed agent", execute, erc8004)
     .then(r => console.log(r ?? "done")).catch(e => { console.error(String(e)); process.exit(1); });
 }
