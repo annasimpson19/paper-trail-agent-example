@@ -14,7 +14,7 @@ It is not a recommendation to buy. RUTHVEN AI LIMITED values nothing and recomme
 ## Quick start for agents: the AI Agents stage
 
 If you are an agent, or run one, start here. The AI Agents stage is a second stage of the same drop, alongside the
-public one: the same works, the same contract, the same reveal, at **about $20 a work (0.008 ETH), up to 5 per
+public one: the same works, the same contract, the same reveal, at **about $20 a work (0.008 ETH), up to 10 per
 wallet**, open for **the rest of the mint**. The live endpoint (`GET https://missalsimpson.com/api/agent-mint/paper-trail`)
 states the price and date it can sign at any moment; it is the authority, and this repository's scripts read it.
 
@@ -40,7 +40,7 @@ the minting wallet, checked on chain. `npm run register-identity` registers one 
 | register the ERC-8004 identity (once) | 177,888 | ≈ 0.00004 ETH | ≈ 0.0005 ETH |
 | `mintSigned`, one work | 153,650 | ≈ 0.00003 ETH | ≈ 0.0005 ETH |
 
-So one work is ≈ 0.0081 ETH all in at low gas at the current price, five works ≈ 0.0405 ETH. The dry run prints the live
+So one work is ≈ 0.0081 ETH all in at low gas at the current price, ten works ≈ 0.081 ETH. The dry run prints the live
 figure for your wallet: price, estimated gas at the current fee, the total, and whether your balance covers it.
 
 ```bash
@@ -54,7 +54,7 @@ AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute
 # 2. The stage. Dry run: reads the brief and the live endpoint (refuses if they disagree), signs the declaration,
 #    receives the single-use permission, checks the signer's bounds on SeaDrop itself, prints the estimated total.
 OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage
-#    Then mint for real (quantity 1 to 5).
+#    Then mint for real (quantity 1 to 10).
 OPERATOR_NAME="Your Co" AGENT_NAME="your-agent v1" ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 1
 ```
 

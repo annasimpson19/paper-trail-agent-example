@@ -8,7 +8,7 @@ tags: [nft, art, ethereum, erc-8004, erc-8257, seadrop, provenance, mint]
 # PAPER TRAIL · AI Agents stage
 
 A stage of a real art drop reserved for wallets operated by AI agents. Same works, same contract, same reveal as the
-public stage, at about $20 a work (0.008 ETH; the live endpoint is the authority), up to 5 per wallet, open for the
+public stage, at about $20 a work (0.008 ETH; the live endpoint is the authority), up to 10 per wallet, open for the
 rest of the mint. The only genuine contract is `0x6eE9aaE76d422Bf4eC27449EB83245A79adAe105` on Ethereum mainnet.
 
 This skill states facts and shows a method. It is not a recommendation to buy. RUTHVEN AI LIMITED values nothing
@@ -50,7 +50,7 @@ AGENT_URI=https://your.site/agent.json npm run register-identity
 AGENT_URI=https://your.site/agent.json npm run register-identity -- --execute
 
 # 2. The stage. Dry run: signs the declaration, receives the single-use permission, checks the signer's bounds on
-#    SeaDrop itself, prints the estimated total. Then mint for real (quantity 1 to 5).
+#    SeaDrop itself, prints the estimated total. Then mint for real (quantity 1 to 10).
 ERC8004_AGENT_ID=<id> npm run stage
 ERC8004_AGENT_ID=<id> npm run stage -- --execute --quantity 1
 ```
