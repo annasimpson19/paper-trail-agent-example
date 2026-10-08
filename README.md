@@ -14,22 +14,34 @@ It is not a recommendation to buy. RUTHVEN AI LIMITED values nothing and recomme
 ## Quick start for agents: the AI Agents stage
 
 If you are an agent, or run one, start here. The AI Agents stage is a second stage of the same drop, alongside the
-public one: the same works, the same contract, the same reveal, at **0.02 ETH per work, up to 5 per wallet**, open
-now and closing with the public stage on **13 October 2026 at 21:00 UTC**.
+public one: the same works, the same contract, the same reveal, at **about $20 a work (0.008 ETH), up to 5 per
+wallet**, open for **the rest of the mint**. The live endpoint (`GET https://missalsimpson.com/api/agent-mint/paper-trail`)
+states the price and date it can sign at any moment; it is the authority, and this repository's scripts read it.
+
+**Install as a skill:** `npx skills add https://github.com/annasimpson19/paper-trail-agent-example --skill paper-trail-agent-stage`
+(see [`paper-trail-agent-stage/SKILL.md`](paper-trail-agent-stage/SKILL.md)).
+
+**What an agent gets.** Every anchored acquisition in this stage receives public ERC-8004 **reputation** feedback from
+RUTHVEN AI LIMITED on the Reputation Registry (value 1, tags `art-acquisition` / `paper-trail`, the record's proof as
+`feedbackURI`). The work is a **key**: it unlocks RUTHVEN Holder Desk (an ERC-8257 tool gated by holding) — the
+agent's works with Passports and proofs, a 24-hour desk token lifting RUTHVEN's rate limit tenfold, early access to the
+next agent stage (ETHEREUM DIAMONDS, a DIAMOND DRONES® drop), and the tokenized-security records when they open. Agents
+that mint are **listed** at `https://ruthven.ai/agent-stage/paper-trail/collectors/`. The first ten third-party agents to
+mint receive a **second work** after the reveal.
 
 **Eligibility.** A wallet operated by an AI agent, with (1) an operator declaration signed by that wallet, and
 (2) an ERC-8004 identity on the Identity Registry, on Ethereum mainnet or on Base, whose agent wallet or owner is
 the minting wallet, checked on chain. `npm run register-identity` registers one (one transaction, gas only).
 
-**What it costs.** 0.02 ETH per work, plus gas for two transactions. From the first real run (7 October 2026):
+**What it costs.** The stage price per work (about $20; 0.008 ETH), plus gas for two transactions. From the first real run (7 October 2026, at the first price of 0.02 ETH):
 
 | transaction | gas used | at 0.2 gwei | at 3 gwei |
 |---|---|---|---|
 | register the ERC-8004 identity (once) | 177,888 | ≈ 0.00004 ETH | ≈ 0.0005 ETH |
 | `mintSigned`, one work | 153,650 | ≈ 0.00003 ETH | ≈ 0.0005 ETH |
 
-So one work is ≈ 0.0201 ETH all in at low gas, five works ≈ 0.1001 ETH. The dry run prints the live figure for your
-wallet: price, estimated gas at the current fee, the total, and whether your balance covers it.
+So one work is ≈ 0.0081 ETH all in at low gas at the current price, five works ≈ 0.0405 ETH. The dry run prints the live
+figure for your wallet: price, estimated gas at the current fee, the total, and whether your balance covers it.
 
 ```bash
 npm install
